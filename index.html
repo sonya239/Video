@@ -14,27 +14,15 @@
         --accent: #4f4f4f;
         --accent-hover: #5c5c5c;
       }
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
       body {
         background: var(--bg);
         color: var(--text);
-        font:
-          15px/1.4 system-ui,
-          sans-serif;
+        font: 15px/1.4 system-ui, sans-serif;
       }
-      .hidden {
-        display: none !important;
-      }
-      input,
-      button,
-      textarea {
+      .hidden { display: none !important; }
+      input, button, textarea {
         font: inherit;
         border-radius: 10px;
         border: 1px solid var(--line);
@@ -42,8 +30,7 @@
         color: var(--text);
         padding: 11px 14px;
       }
-      input:focus,
-      textarea:focus {
+      input:focus, textarea:focus {
         outline: 2px solid var(--muted);
         border-color: transparent;
       }
@@ -55,17 +42,13 @@
         font-weight: 600;
         transition: background 0.2s;
       }
-      button:hover {
-        background: var(--accent-hover);
-      }
+      button:hover { background: var(--accent-hover); }
       button.ghost {
         background: var(--card);
         border: 1px solid var(--line);
         color: var(--text);
       }
-      button.ghost:hover {
-        background: var(--line);
-      }
+      button.ghost:hover { background: var(--line); }
 
       #home {
         min-height: 100%;
@@ -85,30 +68,21 @@
         height: 80px;
         font-family: monospace;
         font-size: 12px;
+        word-break: break-all;
       }
-      #err {
-        color: #ff8a8a;
-        font-size: 13px;
-        min-height: 18px;
-      }
+      #err { color: #ff8a8a; font-size: 13px; min-height: 18px; }
 
       .code-row {
         display: flex;
+        flex-wrap: wrap;
         gap: 8px;
         margin-top: 5px;
       }
-      .code-row textarea {
-        flex: 1;
-      }
-      .code-row button {
-        padding: 0 15px;
-      }
+      .code-row textarea { flex: 1 1 100%; }
+      .code-row .btns { display: flex; gap: 8px; width: 100%; }
+      .code-row .btns button { flex: 1; }
 
-      #room {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
+      #room { height: 100%; display: flex; flex-direction: column; }
       header {
         display: flex;
         align-items: center;
@@ -117,9 +91,7 @@
         border-bottom: 1px solid var(--line);
         background: #1e1e1e;
       }
-      header .sp {
-        flex: 1;
-      }
+      header .sp { flex: 1; }
       #main {
         flex: 1;
         min-height: 0;
@@ -134,16 +106,13 @@
         display: grid;
         place-items: center;
       }
-      #stage video,
-      #stage iframe {
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
+      #stage video, #stage iframe { width: 100%; height: 100%; border: 0; }
       #urlbar {
         padding: 10px 14px;
         border-bottom: 1px solid var(--line);
       }
+      #urlbar .row { display: flex; gap: 8px; }
+      #urlbar input { flex: 1; min-width: 0; }
       #chat {
         flex: 1;
         min-height: 0;
@@ -159,51 +128,32 @@
         flex-direction: column;
         gap: 6px;
       }
-      .msg b {
-        color: #e0e0e0;
-        font-weight: 600;
-      }
-      .sys {
-        color: var(--muted);
-        font-size: 13px;
-        font-style: italic;
-      }
+      .msg b { color: #e0e0e0; font-weight: 600; }
+      .sys { color: var(--muted); font-size: 13px; font-style: italic; }
       #send {
         display: flex;
         gap: 8px;
         padding: 10px 14px;
         border-top: 1px solid var(--line);
       }
-      #send input {
-        flex: 1;
-        min-width: 0;
-      }
+      #send input { flex: 1; min-width: 0; }
 
       @media (min-width: 900px) {
-        #main {
-          flex-direction: row;
-        }
+        #main { flex-direction: row; }
         #left {
           flex: 1;
           min-width: 0;
           display: flex;
           flex-direction: column;
         }
-        #stage {
-          max-height: none;
-          flex: 1;
-          aspect-ratio: auto;
-        }
+        #stage { max-height: none; flex: 1; aspect-ratio: auto; }
         #chat {
           width: 340px;
           flex: none;
           border-left: 1px solid var(--line);
         }
       }
-      #left {
-        display: flex;
-        flex-direction: column;
-      }
+      #left { display: flex; flex-direction: column; }
     </style>
   </head>
   <body>
@@ -215,18 +165,31 @@
             id="nickHost"
             placeholder="Имя"
             style="width: 100%; margin-bottom: 8px"
+            autocapitalize="off"
+            autocorrect="off"
           />
           <button id="btnCreateOffer" style="width: 100%">Создать</button>
           <div id="offerBox" class="hidden" style="margin-top: 10px">
             <div class="muted" style="margin-bottom: 4px">Код приглашения:</div>
             <div class="code-row">
-              <textarea id="offerCode" readonly></textarea>
-              <button id="btnCopyOffer">Скопировать</button>
+              <textarea id="offerCode" readonly autocapitalize="off" spellcheck="false"></textarea>
+              <div class="btns">
+                <button id="btnCopyOffer">Скопировать</button>
+              </div>
             </div>
             <div class="muted" style="margin-top: 10px; margin-bottom: 4px">
               Вставьте ответ:
             </div>
-            <textarea id="answerIn" placeholder="Ответный код..."></textarea>
+            <textarea
+              id="answerIn"
+              placeholder="Ответный код..."
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            ></textarea>
+            <div class="btns" style="display:flex; gap:8px; margin-top:8px;">
+              <button id="btnPasteAnswer" class="ghost" style="flex:1">Вставить из буфера</button>
+            </div>
             <button id="btnAcceptAnswer" style="width: 100%; margin-top: 8px">
               Завершить
             </button>
@@ -241,19 +204,29 @@
             id="nickGuest"
             placeholder="Имя"
             style="width: 100%; margin-bottom: 8px"
+            autocapitalize="off"
+            autocorrect="off"
           />
           <textarea
             id="offerIn"
             placeholder="Вставьте код от хоста..."
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
           ></textarea>
+          <div class="btns" style="display:flex; gap:8px; margin-top:8px;">
+            <button id="btnPasteOffer" class="ghost" style="flex:1">Вставить из буфера</button>
+          </div>
           <button id="btnAcceptOffer" style="width: 100%; margin-top: 8px">
             Принять
           </button>
           <div id="answerBox" class="hidden" style="margin-top: 10px">
             <div class="muted" style="margin-bottom: 4px">Ваш ответ:</div>
             <div class="code-row">
-              <textarea id="answerCode" readonly></textarea>
-              <button id="btnCopyAnswer">Скопировать</button>
+              <textarea id="answerCode" readonly autocapitalize="off" spellcheck="false"></textarea>
+              <div class="btns">
+                <button id="btnCopyAnswer">Скопировать</button>
+              </div>
             </div>
             <div class="muted" style="margin-top: 8px">
               Отправьте этот код хосту.
@@ -280,7 +253,7 @@
         <div id="left">
           <div id="urlbar" class="hidden">
             <div class="row">
-              <input id="urlIn" placeholder="Вставьте ссылку" />
+              <input id="urlIn" placeholder="Вставьте ссылку" autocapitalize="off" autocorrect="off" />
               <button id="btnLoad">Загрузить</button>
             </div>
           </div>
@@ -323,9 +296,7 @@
         }
       });
 
-      function err(t) {
-        $("err").textContent = t;
-      }
+      function err(t) { $("err").textContent = t; }
       function addLog(text, cls, who) {
         const d = document.createElement("div");
         d.className = cls || "msg";
@@ -339,54 +310,111 @@
         $("log").scrollTop = 1e9;
       }
 
+      // --- Кодирование / декодирование SDP ---
+      // btoa/atob требуют "чистую" строку. Плюс защищаемся от замены '+' на пробел
+      // некоторыми клавиатурами/мессенджерами.
+      function encodeSDP(obj) {
+        const json = JSON.stringify(obj);
+        // btoa работает с Latin-1; JSON SDP всегда ASCII, так что ок
+        return btoa(json);
+      }
+      function decodeSDP(raw) {
+        if (!raw) throw new Error("Пустой код");
+        // Убираем все пробельные символы (включая неразрывные)
+        let s = raw.replace(/\s+/g, "");
+        // Восстанавливаем '+' (некоторые клавиатуры превращают '+' в пробел)
+        // Base64-алфавит: A-Z a-z 0-9 + / =  -> пробел мог заменить '+'
+        // Мы уже убрали пробелы, поэтому просто проверяем допустимость символов.
+        if (!/^[A-Za-z0-9+/=]+$/.test(s)) {
+          throw new Error("Код содержит недопустимые символы");
+        }
+        // Padding
+        while (s.length % 4 !== 0) s += "=";
+        const json = atob(s);
+        return JSON.parse(json);
+      }
+
       async function copyText(elementId, btnElement) {
         const text = $(elementId).value;
         try {
-          await navigator.clipboard.writeText(text);
-          const originalText = btnElement.textContent;
-          btnElement.textContent = "Скопировано!";
-          setTimeout(() => (btnElement.textContent = originalText), 1500);
-        } catch (err) {
-          $(elementId).select();
-          document.execCommand("copy");
-          btnElement.textContent = "Скопировано!";
-          setTimeout(() => (btnElement.textContent = "Скопировать"), 1500);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            throw new Error("no clipboard");
+          }
+        } catch (e) {
+          const el = $(elementId);
+          el.removeAttribute("readonly");
+          el.select();
+          el.setSelectionRange(0, el.value.length);
+          try { document.execCommand("copy"); } catch (_) {}
+          if (elementId === "offerCode" || elementId === "answerCode") {
+            el.setAttribute("readonly", "");
+          }
+        }
+        const originalText = btnElement.textContent;
+        btnElement.textContent = "Скопировано!";
+        setTimeout(() => (btnElement.textContent = originalText), 1500);
+      }
+
+      async function pasteInto(elementId, btnElement) {
+        try {
+          if (!navigator.clipboard || !navigator.clipboard.readText) {
+            throw new Error("no read");
+          }
+          const t = await navigator.clipboard.readText();
+          $(elementId).value = t.replace(/\s+/g, "");
+          btnElement.textContent = "Вставлено!";
+          setTimeout(() => (btnElement.textContent = "Вставить из буфера"), 1200);
+        } catch (e) {
+          // iOS может не дать доступ — просим вставить вручную
+          $(elementId).focus();
+          err("Вставьте вручную (долгое нажатие → Вставить)");
         }
       }
 
-      $("btnCopyOffer").onclick = () =>
-        copyText("offerCode", $("btnCopyOffer"));
-      $("btnCopyAnswer").onclick = () =>
-        copyText("answerCode", $("btnCopyAnswer"));
+      $("btnCopyOffer").onclick = () => copyText("offerCode", $("btnCopyOffer"));
+      $("btnCopyAnswer").onclick = () => copyText("answerCode", $("btnCopyAnswer"));
+      $("btnPasteAnswer").onclick = () => pasteInto("answerIn", $("btnPasteAnswer"));
+      $("btnPasteOffer").onclick = () => pasteInto("offerIn", $("btnPasteOffer"));
 
       $("btnCreateOffer").onclick = async () => {
         nick = $("nickHost").value.trim() || "Хост";
         isHost = true;
         err("Создание...");
-        pc = new RTCPeerConnection(config);
+        try {
+          pc = new RTCPeerConnection(config);
 
-        dc = pc.createDataChannel("chat");
-        setupDataChannel();
+          dc = pc.createDataChannel("chat");
+          setupDataChannel();
 
-        pc.onicecandidate = (e) => {
-          if (!e.candidate) {
-            $("offerCode").value = btoa(JSON.stringify(pc.localDescription));
-            $("offerBox").classList.remove("hidden");
-            err("");
-          }
-        };
+          pc.onicecandidate = (e) => {
+            if (!e.candidate) {
+              $("offerCode").value = encodeSDP(pc.localDescription);
+              $("offerBox").classList.remove("hidden");
+              err("");
+            }
+          };
+          pc.oniceconnectionstatechange = () => {
+            addLog("ICE: " + pc.iceConnectionState, "sys");
+          };
 
-        const offer = await pc.createOffer();
-        await pc.setLocalDescription(offer);
+          const offer = await pc.createOffer();
+          await pc.setLocalDescription(offer);
+        } catch (e) {
+          console.error(e);
+          err("Не удалось создать приглашение: " + e.message);
+        }
       };
 
       $("btnAcceptAnswer").onclick = async () => {
         try {
-          const answer = JSON.parse(atob($("answerIn").value.trim()));
+          const answer = decodeSDP($("answerIn").value);
           await pc.setRemoteDescription(new RTCSessionDescription(answer));
           err("Соединение...");
         } catch (e) {
-          err("Неверный ответный код");
+          console.error(e);
+          err("Неверный ответный код: " + e.message);
         }
       };
 
@@ -395,7 +423,7 @@
         isHost = false;
         err("Соединение...");
         try {
-          const offer = JSON.parse(atob($("offerIn").value.trim()));
+          const offer = decodeSDP($("offerIn").value);
           pc = new RTCPeerConnection(config);
 
           pc.ondatachannel = (e) => {
@@ -405,17 +433,21 @@
 
           pc.onicecandidate = (e) => {
             if (!e.candidate) {
-              $("answerCode").value = btoa(JSON.stringify(pc.localDescription));
+              $("answerCode").value = encodeSDP(pc.localDescription);
               $("answerBox").classList.remove("hidden");
               err("");
             }
+          };
+          pc.oniceconnectionstatechange = () => {
+            addLog("ICE: " + pc.iceConnectionState, "sys");
           };
 
           await pc.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await pc.createAnswer();
           await pc.setLocalDescription(answer);
         } catch (e) {
-          err("Неверный код приглашения");
+          console.error(e);
+          err("Неверный код приглашения: " + e.message);
         }
       };
 
@@ -431,8 +463,13 @@
           isConnected = false;
         };
 
+        dc.onerror = (e) => {
+          console.error("DC error", e);
+        };
+
         dc.onmessage = (e) => {
-          const msg = JSON.parse(e.data);
+          let msg;
+          try { msg = JSON.parse(e.data); } catch (_) { return; }
           switch (msg.t) {
             case "chat":
               addLog(msg.text, "msg", msg.nick);
@@ -443,14 +480,12 @@
             case "hello":
               if (isHost) {
                 if (current.url)
-                  dc.send(
-                    JSON.stringify({
-                      t: "state",
-                      url: current.url,
-                      playing,
-                      time: player ? player.time() : 0,
-                    }),
-                  );
+                  dc.send(JSON.stringify({
+                    t: "state",
+                    url: current.url,
+                    playing,
+                    time: player ? player.time() : 0,
+                  }));
                 addLog(msg.nick + " зашел", "sys");
               }
               break;
@@ -468,21 +503,13 @@
               });
               break;
             case "play":
-              remote(() => {
-                syncTime(msg.time);
-                player && player.play();
-              });
+              remote(() => { syncTime(msg.time); player && player.play(); });
               break;
             case "pause":
-              remote(() => {
-                syncTime(msg.time);
-                player && player.pause();
-              });
+              remote(() => { syncTime(msg.time); player && player.pause(); });
               break;
             case "seek":
-              remote(() => {
-                player && player.seek(msg.time);
-              });
+              remote(() => { player && player.seek(msg.time); });
               break;
           }
         };
@@ -500,9 +527,7 @@
       }
       function remote(fn) {
         ignoreUntil = Date.now() + 900;
-        try {
-          fn();
-        } catch (e) {}
+        try { fn(); } catch (e) {}
       }
       function local(type) {
         if (Date.now() < ignoreUntil || !player) return;
@@ -514,9 +539,7 @@
       }
 
       function detect(url) {
-        const m = url.match(
-          /rutube\.ru\/(?:video|play\/embed)\/(?:private\/)?([a-f0-9]{32})/i,
-        );
+        const m = url.match(/rutube\.ru\/(?:video|play\/embed)\/(?:private\/)?([a-f0-9]{32})/i);
         if (m) return { kind: "rutube", id: m[1] };
         if (/\.(mp4|webm|ogg|m3u8)(\?|#|$)/i.test(url)) return { kind: "file" };
         return { kind: "unknown" };
@@ -531,10 +554,9 @@
         stage.innerHTML = "";
         current = { url, kind: info.kind };
         playing = false;
-        player =
-          info.kind === "rutube"
-            ? rutubePlayer(stage, info, ready)
-            : filePlayer(stage, url, ready);
+        player = info.kind === "rutube"
+          ? rutubePlayer(stage, info, ready)
+          : filePlayer(stage, url, ready);
         if (announce && dc && dc.readyState === "open")
           dc.send(JSON.stringify({ t: "video", url }));
       }
@@ -553,9 +575,7 @@
         return {
           play: () => v.play().catch(() => addLog("Нажмите Play", "sys")),
           pause: () => v.pause(),
-          seek: (t) => {
-            v.currentTime = t;
-          },
+          seek: (t) => { v.currentTime = t; },
           time: () => v.currentTime,
           destroy: () => v.remove(),
         };
@@ -571,44 +591,22 @@
         let lastState = "paused";
         const onMsg = (e) => {
           let m;
-          try {
-            m = JSON.parse(e.data);
-          } catch (_) {
-            return;
-          }
+          try { m = JSON.parse(e.data); } catch (_) { return; }
           if (m.type === "player:currentTime") t = m.data.time;
           if (m.type === "player:changeState") {
             if (m.data.state === "playing" && lastState !== "playing") {
-              lastState = "playing";
-              local("play");
+              lastState = "playing"; local("play");
             }
             if (m.data.state === "paused" && lastState === "playing") {
-              lastState = "paused";
-              local("pause");
+              lastState = "paused"; local("pause");
             }
           }
         };
         window.addEventListener("message", onMsg);
         return {
-          play: () =>
-            f.contentWindow.postMessage(
-              JSON.stringify({ type: "player:play" }),
-              "*",
-            ),
-          pause: () =>
-            f.contentWindow.postMessage(
-              JSON.stringify({ type: "player:pause" }),
-              "*",
-            ),
-          seek: (x) => {
-            f.contentWindow.postMessage(
-              JSON.stringify({
-                type: "player:setCurrentTime",
-                data: { time: x },
-              }),
-              "*",
-            );
-          },
+          play: () => f.contentWindow.postMessage(JSON.stringify({ type: "player:play" }), "*"),
+          pause: () => f.contentWindow.postMessage(JSON.stringify({ type: "player:pause" }), "*"),
+          seek: (x) => f.contentWindow.postMessage(JSON.stringify({ type: "player:setCurrentTime", data: { time: x } }), "*"),
           time: () => t,
           destroy: () => {
             window.removeEventListener("message", onMsg);
